@@ -26,47 +26,94 @@ cat(tar_read(repeats))
 tar_read(laguardia_temp_plot)
 ```
 
-# Bias Tables
+# Conditional Regression
 
-## 2007
+## Bias Tables
+
+### 2007
 
 ```{r table_bias_2007}
 tar_read(table_bias_2007)
 ```
 
-## 2018
+### 2018
 
 ```{r table_bias_2018}
 tar_read(table_bias_2018)
 ```
 
-# Coverage Tables
+## Coverage Tables
 
-## 2007
+### 2007
 
 ```{r table_coverage_2007}
 tar_read(table_coverage_2007)
 ```
 
-## 2018
+### 2018
 
 ```{r table_coverage_2018}
 tar_read(table_coverage_2018)
 ```
 
-# Visualizations
+## Visualizations
 
-## 2007
+### 2007
 
 ```{r vis_2007, fig.width=9.8, fig.height=7}
 tar_read(vis_2007)
 ```
 
-## 2018
+### 2018
 
 ```{r vis_2018, fig.width=9.8, fig.height=7}
 tar_read(vis_2018)
 ```
+
+# Sample Logistic Regression
+
+## Bias Tables
+
+### 2007
+
+```{r table_bias_2007_unconditional}
+tar_read(table_bias_2007_unconditional)
+```
+
+### 2018
+
+```{r table_bias_2018_unconditional}
+tar_read(table_bias_2018_unconditional)
+```
+
+## Coverage Tables
+
+### 2007
+
+```{r table_coverage_2007_unconditional}
+tar_read(table_coverage_2007_unconditional)
+```
+
+### 2018
+
+```{r table_coverage_2018_unconditional}
+tar_read(table_coverage_2018_unconditional)
+```
+
+## Visualizations
+
+### 2007
+
+```{r vis_2007_unconditional, fig.width=9.8, fig.height=7}
+tar_read(vis_2007_unconditional)
+```
+
+### 2018
+
+```{r vis_2018_unconditional, fig.width=9.8, fig.height=7}
+tar_read(vis_2018_unconditional)
+```
+
 
 # Births and Temperature
 
