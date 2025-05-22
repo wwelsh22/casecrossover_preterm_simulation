@@ -115,6 +115,19 @@ tar_read(vis_2018_unconditional)
 ```
 
 
+# Comparison Plots
+
+## Bias
+
+```{r bias_comparison_plot_2018, fig.width=9.8, fig.height=7}
+tar_read(bias_comparison_plot_2018)
+```
+
+## Coverage
+```{r coverage_comparison_plot_2018, fig.width=9.8, fig.height=7}
+tar_read(coverage_comparison_plot_2018)
+```
+
 # Births and Temperature
 
 ## 2007

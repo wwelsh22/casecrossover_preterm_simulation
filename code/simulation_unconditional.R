@@ -1047,3 +1047,68 @@ Visualize_Births_and_Temp <- function(Temp_df, Births_df, start_date, end_date){
   return(combined_plot)
 }
 
+bias_comparison_visualization <- function(conditional_results,unconditional_results){
+
+  conditional_results$Methodology <- "Time Stratified"
+  unconditional_results$Methodology <- "Time Stratified Sampling"
+
+  overall_results <- rbind(conditional_results,unconditional_results) %>%
+    mutate(Bias_per_10F = (estimate*10)-log(Simulated_RR),
+           ex = 1,
+           Analysis = factor(Analysis, levels = c("CCO_2week", "CCO_28day", "CCO_Month"),
+                             labels = c("Time Stratified: 2 weeks", "Time Stratified: 28 days", "Time Stratified: Month")))
+
+  bias_comp_plot <- ggplot(overall_results) +
+    geom_boxplot(aes(ex,Bias_per_10F, fill = Methodology), width = .5) +
+    facet_grid(vars(Analysis),vars(Simulated_RR), switch = "x") +
+    ylab("Bias") +
+    theme_minimal() +
+    scale_x_continuous(breaks = NULL) +
+    theme(legend.position = "bottom",
+          axis.title.x = element_blank(),
+          legend.title = element_blank())
+
+  return(bias_comp_plot)
+}
+
+coverage_comparison_visualization <- function(conditional_results,unconditional_results,number_of_repeats){
+
+  conditional_results$Methodology <- "Time Stratified"
+  unconditional_results$Methodology <- "Time Stratified Sampling"
+
+  overall_results <- rbind(conditional_results,unconditional_results) %>%
+    group_by(Analysis, Simulated_RR) %>%
+    mutate(Round_of_Sim = row_number(),
+           Analysis = factor(Analysis, levels = c("CCO_2week", "CCO_28day", "CCO_Month"),
+                             labels = c("2 weeks", "28 days", "1 Month"))) %>%
+    ungroup() %>%
+    mutate(Exp_ConfLow = exp(conf.low*10),
+           Exp_ConfHigh = exp(conf.high*10),
+           Exp_Estimate = exp(estimate*10)) %>%
+    dplyr::select(Round_of_Sim, Exp_Estimate, Exp_ConfLow, Exp_ConfHigh, Simulated_RR, Analysis, Methodology)
+
+  Coverage1 <<- overall_results %>%
+    ungroup() %>%
+    mutate(Covered = if_else(Simulated_RR>=Exp_ConfLow & Simulated_RR<=Exp_ConfHigh, 1, 0)) %>%
+    group_by(Simulated_RR, Analysis, Methodology) %>%
+    summarise(Coverage = (sum(Covered)/number_of_repeats)) %>%
+    ungroup()
+
+  cov_comp_plot <- ggplot() +
+    geom_point(data = Coverage1,
+               aes(x = as.numeric(Analysis), y = Coverage, shape = Methodology, color = Analysis), size = 5,alpha = .8) +
+    facet_grid(~Simulated_RR, switch = "x") +
+    geom_hline(yintercept = .95, linetype = 2) +
+    scale_y_continuous(labels = scales::percent_format(accuracy = 1, scale = 100), minor_breaks = seq(0 , 1, .05), breaks = seq(0, 1, .20), limits = c(0,1)) +
+    scale_x_continuous(breaks = NULL, limits = c(.5, 3.5)) +
+    theme_minimal(base_size = 22) +
+    theme(legend.position = "bottom",
+          legend.key.size = unit(0.5, "lines"),
+          legend.text = element_text(size = 9),
+          legend.title = element_text(size = 10)) +
+    xlab("Simulated Relative Risk") +
+    ylab("Coverage of 95% CI")
+
+  return(cov_comp_plot)
+}
+

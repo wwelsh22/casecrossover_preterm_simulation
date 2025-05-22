@@ -6,3 +6,4 @@ data/
 _targets/
 code/report*
 .DS_Store
+comparison_visualization_work.R

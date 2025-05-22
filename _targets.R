@@ -41,7 +41,7 @@ list(
                                          Annual_Singleton_Births_file)),
 
   # SIMULATIONS ####
-  tar_target(repeats, 1), # 1000 in publication, shorter for quick demonstration
+  tar_target(repeats, 10), # 1000 in publication, shorter for quick demonstration
   tar_target(batch_size, max(as.integer(repeats/10), 1)),
   tar_target(input_simulation_2007,
              Bootstrap_params(start_date = "2007-05-01", end_date = "2007-10-01",
@@ -110,6 +110,12 @@ list(
              Visualize_Results(CCO_simulation_2007_unconditional$unconditional, number_of_repeats = repeats)),
   tar_target(vis_2018_unconditional,
              Visualize_Results(CCO_simulation_2018_unconditional$unconditional, number_of_repeats = repeats)),
+
+  ## Comparison Visualizations
+  tar_target(bias_comparison_plot_2018,
+             bias_comparison_visualization(CCO_simulation_2018_unconditional$conditional,CCO_simulation_2018_unconditional$unconditional)),
+  tar_target(coverage_comparison_plot_2018,
+             coverage_comparison_visualization(CCO_simulation_2018_unconditional$conditional,CCO_simulation_2018_unconditional$unconditional,number_of_repeats =repeats)),
 
   ## Birth Temp
   tar_target(vis_birth_temp_2007,
