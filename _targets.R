@@ -116,11 +116,26 @@ list(
              bias_comparison_visualization(CCO_simulation_2018_unconditional$conditional,CCO_simulation_2018_unconditional$unconditional)),
   tar_target(coverage_comparison_plot_2018,
              coverage_comparison_visualization(CCO_simulation_2018_unconditional$conditional,CCO_simulation_2018_unconditional$unconditional,number_of_repeats =repeats)),
+  tar_target(power_comparison_plot_2018,
+             power_comparison_visualization(CCO_simulation_2018_unconditional$conditional,CCO_simulation_2018_unconditional$unconditional,number_of_repeats =repeats)),
+  tar_target(fp_comparison_plot_2018,
+             fp_comparison_visualization(CCO_simulation_2018_unconditional$conditional,CCO_simulation_2018_unconditional$unconditional,number_of_repeats =repeats)),
 
   ## Birth Temp
   tar_target(vis_birth_temp_2007,
               Visualize_Births_and_Temp(LaGuardiaTemp1, Preterms_per_day_all, "2007-05-01", "2007-10-01")),
   tar_target(vis_birth_temp_2018,
               Visualize_Births_and_Temp(LaGuardiaTemp1, Preterms_per_day_all, "2018-05-01", "2018-10-01")),
+
+  ## Export Results
+  tar_target(result_export_status_2018unc, export_results(CCO_simulation_2018_unconditional$unconditional,
+                                                  '2018 Unconditional Simulation Results')),
+  tar_target(result_export_status_2018con, export_results(CCO_simulation_2018_unconditional$conditional,
+                                                  '2018 Conditional Simulation Results')),
+  tar_target(result_export_status_2007unc, export_results(CCO_simulation_2007_unconditional$unconditional,
+                                                  '2007 Unconditional Simulation Results')),
+  tar_target(result_export_status_2007con, export_results(CCO_simulation_2007_unconditional$unconditional,
+                                                  '2007 Conditional Simulation Results')),
+
   tar_render(report, 'code/report.Rmd')
 )
